@@ -201,6 +201,29 @@ nav.top{position:sticky;z-index:10}
 footer img{width:120px;height:auto;margin:0 auto;display:block}
 footer .script{font-size:38px;color:var(--grape);margin-top:6px}
 footer p{color:var(--muted);font-size:14px;letter-spacing:.2em;text-transform:uppercase;margin-top:6px}
+
+/* code locks */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.lockcard{max-width:420px;margin:0 auto;text-align:center;padding:36px 28px 30px;border:1px solid var(--line);background:var(--paper);display:flex;flex-direction:column;align-items:center;gap:10px}
+.lockcard.dark{background:rgba(255,255,255,.04);border-color:rgba(233,220,192,.25)}
+.lockicon{width:34px;height:34px;color:var(--gold)}
+.lockcard.dark .lockicon{color:var(--champagne)}
+.locktitle{font-family:var(--display);font-size:26px}
+.lockhint{color:var(--muted);font-size:15px}
+.lockcard.dark .lockhint,.lockcard.dark .lockask{color:var(--on-dark-muted)}
+.codeinput{margin-top:8px;width:180px;max-width:100%;text-align:center;font-family:var(--display);font-size:30px;letter-spacing:.5em;padding:10px 0 10px .5em;background:transparent;color:inherit;border:0;border-bottom:1px solid var(--gold);border-radius:0;font-variant-numeric:tabular-nums}
+.codeinput:focus{outline:none;border-bottom-width:2px}
+.codeinput::placeholder{color:var(--muted);opacity:.6}
+.unlockbtn{margin-top:10px;padding:12px 30px;background:var(--champagne);color:var(--grape-deep);border:0;border-radius:2px;font:500 13px/1 var(--body);letter-spacing:.18em;text-transform:uppercase;cursor:pointer}
+.unlockbtn:hover{background:#F2E4C6}
+.unlockbtn[disabled]{opacity:.6;cursor:wait}
+.lockmsg{min-height:1.4em;font-size:14px;color:#E8A3A3}
+.lockask{font-size:13.5px;color:var(--muted)}
+.locked.shake .lockcard{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media (prefers-reduced-motion: reduce){.locked.shake .lockcard{animation:none}}
+.relock{display:block;margin:28px auto 0;background:none;border:0;color:var(--muted);font:500 12px var(--body);letter-spacing:.18em;text-transform:uppercase;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.squad .relock{color:var(--on-dark-muted)}
 </style>
 </head>
 <body>
@@ -293,31 +316,20 @@ footer p{color:var(--muted);font-size:14px;letter-spacing:.2em;text-transform:up
       <p>Bridal party attire</p>
     </div>
 
-    <div class="crew-grid">
-      <div class="prose">
-        <p class="lede">Jaylon has selected the color for each member of her bridal party. The style and design are yours!</p>
-        <p class="muted">Choose a look that makes you feel confident, comfortable, and fabulous while complementing the overall wedding aesthetic.</p>
-        <div class="request">
-          <div class="script">Jaylon's One Request</div>
-          <p>Please make sure any dress <strong>slit/split is not too high</strong>. Other than that&hellip;</p>
-          <p class="slay">COME TO SLAY!</p>
-        </div>
-      </div>
-
-      <div class="palette" aria-label="Colors by role">
-        <h3>Colors</h3>
-        <div class="swatch"><span class="chip" style="background:var(--champagne)"></span><div><div class="c">Champagne</div><div class="who">Maid of Honor · Jam</div></div></div>
-        <div class="swatch"><span class="chip" style="background:var(--wisteria)"></span><div><div class="c">Wisteria</div><div class="who">Matron of Honor · Mitonia</div></div></div>
-        <div class="swatch"><span class="chip" style="background:var(--grape-swatch)"></span><div><div class="c">Grape</div><div class="who">Bridesmaids · Deja, Jazz &amp; Aaliyah</div></div></div>
-        <div class="swatch"><span class="chip split"></span><div><div class="c">Champagne Tux</div><div class="who">Brides Attendant · Joseph, with Grape accessories</div></div></div>
-      </div>
+    <div class="locked" id="lock-crew" data-section="crew">
+      <form class="lockcard" novalidate>
+        <svg class="lockicon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+        <div class="locktitle">I Do Crew</div>
+        <p class="lockhint">Enter the 4-digit Jay's I Do Crew code to see attire details.</p>
+        <label class="sr" for="code-crew">Jay's I Do Crew code</label>
+        <input id="code-crew" class="codeinput" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="••••">
+        <button type="submit" class="unlockbtn">Unlock</button>
+        <p class="lockmsg" role="status" aria-live="polite"></p>
+        <p class="lockask">Don't have the code? Ask Jam or Mitonia.</p>
+      </form>
+      <div class="lockedcontent" hidden></div>
+      <script type="application/json" class="payload">{"s": "pk4v7qaM5qTlWNkSubzZAg==", "i": "rsZhzWoVqopLt/7e", "c": "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", "n": 250000}</script>
     </div>
-
-    <div class="shops">
-      <a class="shop" href="https://www.chicsew.com" target="_blank" rel="noopener"><b>ChicSew</b><span>Bridesmaid and formal dress options.</span><em>Browse →</em></a>
-      <a class="shop" href="https://www.azazie.com" target="_blank" rel="noopener"><b>Azazie</b><span>Bridesmaid dresses with a variety of silhouettes, sizes, and styles.</span><em>Browse →</em></a>
-    </div>
-    <div class="notice"><div><b>Before ordering:</b> please confirm your selected dress/style with Jaylon so we can make sure the overall bridal party look is cohesive.</div></div>
   </div>
 </section>
 
@@ -328,27 +340,19 @@ footer p{color:var(--muted);font-size:14px;letter-spacing:.2em;text-transform:up
       <h2>RJ's Groom Squad</h2>
       <p>Suits, tuxedos &amp; the standard</p>
     </div>
-    <div class="squad-grid">
-      <div class="prose">
-        <p class="lede">RJ will select the overall color palette and attire expectations for the Groom Squad.</p>
-        <p>Final suit/tuxedo selections, shirt, tie/bow tie, shoes, accessories, and rental/purchase information will be provided once finalized.</p>
-        <div class="rental">
-          <span class="eyebrow">Suggested Tux/Suit Rental</span>
-          <p>RJ's recommended rental shop, group code and ordering instructions will be posted here.</p>
-          <span class="tba">Coming soon</span>
-        </div>
-      </div>
-      <div class="standard">
-        <h3>The Standard</h3>
-        <p style="color:var(--on-dark-muted);margin-top:8px">Your suit/tux should be:</p>
-        <ol>
-          <li>Ordered on time.</li>
-          <li>Properly fitted.</li>
-          <li>Pressed and ready.</li>
-          <li>Complete from head to toe.</li>
-        </ol>
-        <p class="warn">No last-minute missing shirts, shoes, ties, cufflinks, or alterations.</p>
-      </div>
+    <div class="locked" id="lock-squad" data-section="squad">
+      <form class="lockcard dark" novalidate>
+        <svg class="lockicon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M8.5 10.5V7.5a3.5 3.5 0 0 1 7 0v3" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+        <div class="locktitle">Groom Squad</div>
+        <p class="lockhint">Enter the 4-digit RJ's Groom Squad code to see attire details.</p>
+        <label class="sr" for="code-squad">RJ's Groom Squad code</label>
+        <input id="code-squad" class="codeinput" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="••••">
+        <button type="submit" class="unlockbtn">Unlock</button>
+        <p class="lockmsg" role="status" aria-live="polite"></p>
+        <p class="lockask">Don't have the code? Ask Marquese or RJ.</p>
+      </form>
+      <div class="lockedcontent" hidden></div>
+      <script type="application/json" class="payload">{"s": "1UUd1KrvQ03l/u1YxRKpBg==", "i": "8OHOByaaAv9JVx3v", "c": "fa85PmUc4pt+uwPsPv5kzT72gUOZKkaG7nU8HykIwO22zysgHi2RDAkygcQZ9fl6Me1B64ajfHaoZp5I63GIxXMx2vCjjJt3i5WL762S9bCG8mM8GWXHJlIdxnNnrmHzcV3d0S55xU0VyAwnNuNsS303nS4VjXJtzFmwKPRMakk1c7sXiG8/9c4yw/TKeS2gogCQ7vmJdOqtJjvJiBQQic3gtgWeC9SB/m+QvPtV5Fe+FHu/xr71cgXJBYrddsAmEYuHYNv0t7/JjPcsA6nqVRjQo/eVxV1Chnf5nSU13jNLc8IIVj7CLTbsM0UXZ1SG6jCWQTTbYus6VncebHycGjdgQtMqGvWV2xVINPqqpzylW8D79T9EULf/6BMVld1aQhRw7xn+H56StCgmVSAfKxnLBJMZ8J6saRY2Hm4TgpZTTSE+Hk/nQZtdcdWr4ZSBQv7Ky1U1eZtLP/bWSOX8mNj2hTB12LCV+Z0OxbFcVSQ0yNDjUiEHoceSPmu6AXfYMM8sDGXdjJFy174MzDWNM9RxAmn2EIeaYOtUrSyhuAZ/jnPAC/i5BEXXxucwysExK1gNKfj8+GbpUBaX8B6UgPxzm2VaNYVXmzMXvx5biHThI1rWXzRrYXiI+7EyC2seaFlx5s8/+KiG+5Z40rQYSdEL/B5XYRPHxb8Z/KkTo6KOmMhk1Sva35cX+pdOlSCzVRkbkEUBPuTgXTFNByMz0xFSLV8c5hH6GcMSTb7jGm+o3/BXc3Z5I1Tl2T3yheGeLzudhOzIdfywK0f7hHPQrcFjS8xaP2Pp8XIcASX4uizH6c45d7WwS+++9Usx1N+IczQnFWztK9vtJZYkOU1T1z8hsVWby5YYZuVTzGpR6QoENdOH5Me4EqDRu2690oZCY5V+OQesFe0McmUrTV/I4Fo7UngjLnuWJEhhcd+rAzHk0ah1gdVM0bbMsgI5r9GOFZY+mVKCtCfdx52aZWulhQxR1CixovzS7ZrdLOAV6lZ30q+orz3OEbvHnVoLv55nJoVVSSce0nH/mAgPT7y2l7qf4DBSnGndT+D/R1pWRT+wCxsvnEg6xLA50MTUMneb5p4p7Xn5wAnxwTGtdsQCJawoukmUDNcemSpQpi/knJS0UBApIJ2YpU9jTYJBZaURk7M9KvvGZwCfI7r7MLY3N2gpSD5QMB3oIhtohZHGAaUP2ZxZMD5urWi1y/qb4CyCOpAO2yMUgAdUa1digdAXheCUIcjioe7hV0dUcfasfrR/z/Wr7xsjrSJk7qlDhlDyFFjpJ2qlXG7tWRocyNct0uaJOZZ1rhLsfeenU1yj9GJ1w1wSupkJqaQEMqzqjoJf884MKqXnVI0J0MFoWdWv6gF5ba5lNIkDoC6PwtpkR8U3lHM9YMJHsBRzRUTWeXueg+R2LPpFqB8=", "n": 250000}</script>
     </div>
   </div>
 </section>
@@ -441,6 +445,42 @@ function tick(){
   document.getElementById("cd-m").textContent = String(m).padStart(2,"0");
 }
 tick(); setInterval(tick, 30000);
+
+// Code-locked sections: content is AES-GCM encrypted; the code derives the key.
+(function(){
+  const b64=x=>Uint8Array.from(atob(x),c=>c.charCodeAt(0));
+  async function decrypt(p,code){
+    const base=await crypto.subtle.importKey("raw",new TextEncoder().encode(code),"PBKDF2",false,["deriveKey"]);
+    const key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:b64(p.s),iterations:p.n,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["decrypt"]);
+    const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(p.i)},key,b64(p.c));
+    return new TextDecoder().decode(pt);
+  }
+  const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+  document.querySelectorAll(".locked").forEach(box=>{
+    const id=box.dataset.section, form=box.querySelector("form"), input=box.querySelector(".codeinput"),
+          btn=box.querySelector(".unlockbtn"), msg=box.querySelector(".lockmsg"), out=box.querySelector(".lockedcontent"),
+          payload=JSON.parse(box.querySelector(".payload").textContent), k="rj-code-"+id;
+    function show(html){
+      out.innerHTML=html;
+      const r=document.createElement("button");r.type="button";r.className="relock";r.textContent="Lock this section";
+      r.addEventListener("click",()=>{store.del(k);out.innerHTML="";out.hidden=true;form.hidden=false;input.value="";msg.textContent="";});
+      out.appendChild(r);
+      out.hidden=false;form.hidden=true;
+    }
+    async function attempt(code,silent){
+      btn.disabled=true;
+      try{ show(await decrypt(payload,code)); store.set(k,code); }
+      catch(e){
+        if(!silent){msg.textContent="That code didn't match. Try again.";box.classList.remove("shake");void box.offsetWidth;box.classList.add("shake");input.select();}
+        else store.del(k);
+      }
+      btn.disabled=false;
+    }
+    form.addEventListener("submit",e=>{e.preventDefault();const v=input.value.trim();if(!/^\d{4}$/.test(v)){msg.textContent="Enter all 4 digits.";return;}attempt(v,false);});
+    input.addEventListener("input",()=>{input.value=input.value.replace(/\D/g,"").slice(0,4);msg.textContent="";if(input.value.length===4)form.requestSubmit();});
+    const saved=store.get(k); if(saved) attempt(saved,true);
+  });
+})();
 </script>
 
 </body>
